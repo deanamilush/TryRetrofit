@@ -13,7 +13,7 @@ public class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build();
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl("http://developer.gsg.co.id/Kantin/public/api/")
+                .baseUrl("http://dev.gsg.co.id/dev-kantin-primary/public/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

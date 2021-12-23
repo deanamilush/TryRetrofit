@@ -41,8 +41,8 @@ public class BagianAdapter extends RecyclerView.Adapter<BagianAdapter.DaysViewHo
     public void onBindViewHolder(@NonNull DaysViewHolder holder, int position) {
         DataItem dataUser = mData.get(position);
         holder.kode.setText(dataUser.getKode());
-        holder.bagian.setText(dataUser.getDeskripsiBagian());
-        holder.lantai.setText(dataUser.getLantai());
+        holder.bagian.setText(dataUser.getLantai());
+        holder.nama.setText(dataUser.getDeskripsiBagian());
     }
 
     @Override
@@ -51,14 +51,13 @@ public class BagianAdapter extends RecyclerView.Adapter<BagianAdapter.DaysViewHo
     }
 
     public static class DaysViewHolder extends RecyclerView.ViewHolder {
-        private final TextView kode, bagian, lantai, nama;
+        private final TextView kode, bagian, nama;
 
         public DaysViewHolder(@NonNull View itemView) {
             super(itemView);
 
             kode = itemView.findViewById(R.id.kode);
             bagian = itemView.findViewById(R.id.bagian);
-            lantai = itemView.findViewById(R.id.lantai);
             nama = itemView.findViewById(R.id.nama);
         }
     }
