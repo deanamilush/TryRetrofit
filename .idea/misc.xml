@@ -3,7 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_splash.xml" value="0.33" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1953125" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable/bg_circle.xml" value="0.27876447876447874" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable/bg_gradien_primary_blue.xml" value="0.27876447876447874" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.1953125" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1953125" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable/ic_mail_outline.xml" value="0.1953125" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_login.xml" value="0.21" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_main.xml" value="0.17502532928064843" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_splash.xml" value="0.18" />
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/item_day.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21331521739130435" />
         <entry key="app/src/main/res/layout/item_day.xml" value="0.25" />

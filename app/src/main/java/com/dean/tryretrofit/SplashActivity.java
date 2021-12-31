@@ -58,12 +58,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setReviewData(List<NameItem> consumerReviews) {
-     //   ArrayList<String> getNameUser = new ArrayList<>();
         for (NameItem review : consumerReviews) {
-          //  getNameUser.add(review.getName());
             name.setText(review.getName());
         }
-        Intent gotoMain = new Intent(getApplicationContext(), MainActivity.class);
+        Intent gotoMain = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(gotoMain);
     }
 
