@@ -21,4 +21,12 @@ interface ApiService {
             @Field("email") String email,
             @Field("password") String password
     );
+
+    @FormUrlEncoded
+    // @Headers({"Authorization: token 12345"})
+    @POST("login")
+    Call<LoginResponse> getUserLogin(
+            @Field("email") String email,
+            @Field("password") String password
+    );
 }

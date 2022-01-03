@@ -1,11 +1,14 @@
 package com.dean.tryretrofit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dean.tryretrofit.api.nama.NamaResponse;
@@ -24,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private TextView name;
     private static final String TAG = "SplashActivity";
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,30 +35,24 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         name = findViewById(R.id.value_name);
+        progressBar = findViewById(R.id.progressBar);
 
-        new Handler().postDelayed(this::getNameSplash, 3000);
+        SplashViewModel splashViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(SplashViewModel.class);
+        splashViewModel.getListReview().observe(this, consumerReviews -> {
+            setReviewData(consumerReviews);
+        });
+
+        splashViewModel.isLoading().observe(this, this::showLoading);
+
+       // new Handler().postDelayed(this::getNameSplash, 3000);
     }
 
-    private void getNameSplash() {
-        Call<NamaResponse> client = ApiConfig.getApiService().getNamaUser();
-        client.enqueue(new Callback<NamaResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<NamaResponse> call, @NotNull Response<NamaResponse> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        setReviewData(response.body().getData());
-                    }
-                } else {
-                    if (response.body() != null) {
-                        Log.e(TAG, "onFailure: " + response.body().getMessage());
-                    }
-                }
-            }
-            @Override
-            public void onFailure(@NotNull Call<NamaResponse> call, @NotNull Throwable t) {
-                Log.e(TAG, "onFailure: " + t.getMessage());
-            }
-        });
+    private void showLoading(Boolean isLoading) {
+        if (isLoading) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private void setReviewData(List<NameItem> consumerReviews) {
@@ -62,11 +60,6 @@ public class SplashActivity extends AppCompatActivity {
             name.setText(review.getName());
         }
         Intent gotoMain = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(gotoMain);
-    }
-
-    private void getCurrentVersion() {
-        Intent gotoMain = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(gotoMain);
     }
 }

@@ -19,4 +19,18 @@ public class ApiConfig {
                 .build();
         return retrofit.create(ApiService.class);
     }
+
+    public static ApiService getApiPatrol() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+        Retrofit retrofit = new retrofit2.Retrofit.Builder()
+                .baseUrl("http://192.168.1.113:30/e-patroli/public/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        return retrofit.create(ApiService.class);
+    }
 }
