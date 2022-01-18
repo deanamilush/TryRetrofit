@@ -27,7 +27,7 @@ public class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build();
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl("http://192.168.1.113:30/e-patroli/public/api/")
+                .baseUrl("http://192.168.1.18:8080/blog/public/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

@@ -77,6 +77,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (response.body().getStatus().equalsIgnoreCase("success")){
 
                         Toast.makeText(LoginActivity.this, "BERHASIIIIIIIL", Toast.LENGTH_SHORT).show();
+                        Intent gotoMain = new Intent(getApplicationContext(), UploadActivity.class);
+                        startActivity(gotoMain);
                         }
                         else{
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
