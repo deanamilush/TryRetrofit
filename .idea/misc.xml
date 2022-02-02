@@ -11,9 +11,11 @@
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/drawable/ic_mail_outline.xml" value="0.1953125" />
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_login.xml" value="0.21" />
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_main.xml" value="0.17502532928064843" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_scan_nfc.xml" value="0.14" />
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_splash.xml" value="0.18" />
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/activity_upload.xml" value="0.269921875" />
         <entry key="..\:/github-local/TryRetrofit/app/src/main/res/layout/item_day.xml" value="0.5" />
+        <entry key="..\:/github-local/TryRetrofit/app/src/main/res/xml/file_path.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21331521739130435" />
         <entry key="app/src/main/res/layout/item_day.xml" value="0.25" />
       </map>

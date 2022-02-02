@@ -21,6 +21,16 @@
                 android:layout_height="2dp"/>
 
             <TextView
+                android:id="@+id/take"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Take Photo"
+                android:textSize="26sp"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
+            <TextView
+                android:id="@+id/take1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Take Photo"
@@ -47,6 +57,29 @@
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
                 android:id="@+id/imageView"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edtId"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/no_transaksi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:inputType="none"
+                    android:hint="Insiden" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/button_photo"

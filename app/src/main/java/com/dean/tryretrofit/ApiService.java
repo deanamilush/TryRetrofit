@@ -5,7 +5,10 @@ import com.dean.tryretrofit.api.ImageResponse;
 import com.dean.tryretrofit.api.login.LoginResponse;
 import com.dean.tryretrofit.api.nama.NamaResponse;
 
+import java.util.Map;
+
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -26,7 +29,10 @@ interface ApiService {
 
     @Multipart
     @POST("image-upload")
-    Call<ImageResponse> uploadPhotoBase64(@Part MultipartBody.Part image);
+    Call<ImageResponse> uploadPhotoBase64(
+            @Part MultipartBody.Part image,
+            @PartMap Map<String, RequestBody> text
+    );
 
     @FormUrlEncoded
     // @Headers({"Authorization: token 12345"})
