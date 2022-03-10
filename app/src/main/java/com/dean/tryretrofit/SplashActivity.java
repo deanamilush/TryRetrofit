@@ -35,7 +35,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         name = findViewById(R.id.value_name);
-        progressBar = findViewById(R.id.progressBar);
 
         SplashViewModel splashViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(SplashViewModel.class);
         splashViewModel.getListReview().observe(this, consumerReviews -> {

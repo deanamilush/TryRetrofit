@@ -38,8 +38,13 @@ import com.dean.tryretrofit.database.BitmapUtils;
 import com.dean.tryretrofit.database.User;
 import com.dean.tryretrofit.databinding.ActivityUploadBinding;
 import com.google.android.material.snackbar.Snackbar;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,6 +61,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
+import cz.msebera.android.httpclient.Header;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -75,6 +81,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     private AutoCompleteTextView noTrx;
     private final ArrayList<String> arrTrx = new ArrayList<String>();
+    private ByteArrayOutputStream byteArrayOutputStream;
+    Bitmap fixBitmap;
+    private String ConvertImage;
 
     /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -91,6 +100,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         uploadBinding = ActivityUploadBinding.inflate(getLayoutInflater());
         setContentView(uploadBinding.getRoot());
 
+        byteArrayOutputStream = new ByteArrayOutputStream();
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat dfPlus = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
         SimpleDateFormat dfPls = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
@@ -113,8 +123,81 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     5);
         }
 
+    }
 
+    private File createTempFile(Bitmap bitmap) {
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                , System.currentTimeMillis() +"_image.jpg");
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
+        bitmap.compress(Bitmap.CompressFormat.JPEG,50, bos);
+        byte[] bitmapdata = bos.toByteArray();
+        //write the bytes in file
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private void SendImage() {
+        fixBitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        ConvertImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setTimeout(70000);
+        RequestParams params = new RequestParams();
+        params.put("image", ConvertImage);
+        String url = "http://36.91.208.116/dev-kantin-primary/public/api/imgUpload";
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Toast.makeText(UploadActivity.this, "berhasil...........", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String errorMessage;
+                switch (statusCode) {
+                    case 401:
+                        errorMessage = statusCode + " : Bad Request";
+                        break;
+                    case 403:
+                        errorMessage = statusCode + " : Forbidden";
+                        break;
+                    case 404:
+                        errorMessage = statusCode + " : Not Found";
+                        break;
+                    default:
+                        errorMessage =  statusCode + " : " + error.getMessage();
+                        break;
+                }
+
+                String mError;
+                if (errorMessage.length() >= 22){
+                    mError = errorMessage.substring(0, 22 );
+                }else {
+                    mError = errorMessage.substring(0, errorMessage.length() - 1 );
+                }
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UploadActivity.this);
+                alertDialogBuilder.setTitle("Error Hubungi Administrator..!");
+                alertDialogBuilder
+                        .setMessage(mError)
+                        .setCancelable(false)
+                        .setPositiveButton("Coba Lagi", (dialog, arg1) -> {
+                            dialog.cancel();
+                            uploadBinding.buttonUpload.setEnabled(true);
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
     }
 
     public Date addHoursToJavaUtilDate(Date date, int hours) {
@@ -146,7 +229,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     private void processAndSetImage() {
         // Resample the saved image to fit the ImageView
-        Bitmap fixBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
+        fixBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
+//        fixBitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
         // Set the new bitmap to the ImageView
         uploadBinding.imageView.setImageBitmap(fixBitmap);
     }
@@ -200,7 +284,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         if (activeNetwork != null && activeNetwork.isConnected()) {
             // connected to the internet
-            postImage();
+//            postImage(fixBitmap);
+            SendImage();
 
         } else{
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UploadActivity.this);
@@ -222,26 +307,21 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 okhttp3.MultipartBody.FORM);
     }
 
-    private void postImage() {
-        HashMap<String, RequestBody> map = new HashMap<>();
-        map.put("waktu", createPartFromString("2017-07-19"));
-        map.put("insiden", createPartFromString("LELE SUPER"));
-        map.put("keterangan", createPartFromString("BAYAM MERAH"));
-        map.put("id", createPartFromString("323278djsadkhjye2"));
-
-        File file = new File(mTempPhotoPath);
+    private void postImage(Bitmap uploadImage) {
+        File file = createTempFile(uploadImage);
+//        File file = new File(mTempPhotoPath);
         RequestBody fbody = RequestBody.create(file, MediaType.parse("image/*"));
-        MultipartBody.Part parts = MultipartBody.Part.createFormData("foto", file.getName(), fbody);
+        MultipartBody.Part parts = MultipartBody.Part.createFormData("image", file.getName(), fbody);
 
-        Call <ImageResponse> call = ApiConfig.getApiPatrol().uploadPhotoBase64(parts, map);
+        Call <ImageResponse> call = ApiConfig.getApiPatrol().uploadPhotoBase64(parts);
         call.enqueue(new Callback<ImageResponse>() {
             @Override
             public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() != null) {
+                    Toast.makeText(UploadActivity.this, "BERHASIIIIIIIL", Toast.LENGTH_SHORT).show();
+                    /*if (response.body() != null) {
                         if (response.body().getStatus().equalsIgnoreCase("success")){
 
-                            Toast.makeText(UploadActivity.this, "BERHASIIIIIIIL", Toast.LENGTH_SHORT).show();
 
                         }
                         else{
@@ -256,7 +336,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                             AlertDialog alertDialog = alertDialogBuilder.create();
                             alertDialog.show();
                         }
-                    }
+                    }*/
                 } else {
                     if (response.body() != null) {
                         Log.e(TAG, "onFailure: " + response.body().getStatus());

@@ -27,7 +27,7 @@ public class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build();
         Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl("http://192.168.1.18:8080/blog/public/api/")
+                .baseUrl("http://192.168.1.128/dev-kantin-primary/public/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

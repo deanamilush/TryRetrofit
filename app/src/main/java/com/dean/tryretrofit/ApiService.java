@@ -28,10 +28,9 @@ interface ApiService {
     );
 
     @Multipart
-    @POST("image-upload")
+    @POST("imgUpload")
     Call<ImageResponse> uploadPhotoBase64(
-            @Part MultipartBody.Part image,
-            @PartMap Map<String, RequestBody> text
+            @Part MultipartBody.Part image
     );
 
     @FormUrlEncoded
